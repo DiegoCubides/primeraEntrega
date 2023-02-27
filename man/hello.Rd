@@ -1,12 +1,15 @@
-\name{hello}
+\name{Juan Diego Cubides}
 \alias{hello}
-\title{Hello, World!}
+\title{Primera Entrega Area Electronica!}
 \usage{
-hello()
+library(nycflights13)
+library(tidyverse)
+library(dplyr)
 }
 \description{
-Prints 'Hello, world!'.
+Somos estudiantes de Ingenieria Mecatronica de la universidad ECCI,
+Este repositorio contiene ejerecicios para practicar las funciones de transformacion en rstudio y un pdf realizado en R makdown
 }
 \examples{
-hello()
+
 }
