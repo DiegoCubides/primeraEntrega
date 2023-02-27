@@ -1,0 +1,197 @@
+---
+title: "Reporte en R-Markdown " 
+#author: "Juan Diego Cubides"
+#date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE,echo =FALSE,eval=FALSE}
+knitr::opts_chunk$set(echo =FALSE)
+```
+
+### Juan Diego Cubides 79998
+
+### Tomas Felipe Mendez Acosta 98417
+
+### Larry Alfredo Castro Ramos 81022
+
+### Jersson Leandro Ávila Méndez 85550
+
+## 1. Números primos:
+
+Para la solucion de este programa decidimos anidar dos for, el primero nos permite tener el conteo del 1 hasta el 100 permitiendonos recorrer todos los numeros a evaluar y el segundo for inicia desde 2 hasta x siendo x el valor en el que va el primer for. Cuando se quiere evaluar que numero es primo o no se tienen dos condiciones esenciales:
+
+-   el numero X no puede se evaluado por b=x/2, es decir que si b es mayor de la mitad de x se sabe que nos va a dar valores con decimales, para esto igualamos b a x y dejamos de evaluar el restante de numero que faltaban por recorrer el for.
+
+-   si b es diferente de x y el modulo de la division de estos dos es 0 se sabe que ya no es un numero primo.
+
+```{r eval=F}
+library(knitr)
+for (x in 1:100){ 
+  primo <- TRUE
+  for(b in 2:x){
+    mitad=x/2
+    if(b>mitad){
+      b=x
+    }
+    if(b!=x & x%%b==0){
+      primo <- FALSE
+    }
+    
+  }
+  if(primo==TRUE){
+  print(x)
+}
+}
+
+
+```
+
+## 2.Uso básico del paquete Tidyverse
+
+-   5.2.4 Exercises: items 1, and 2\
+
+```{r eval=FALSE}
+        library(nycflights13)
+        library(tidyverse)
+        library(dplyr)
+         nycflights13::flights
+        #5.2.4 Exercises
+        #1
+        arrival_delays <- filter(flights,arr_delay>=120)
+        #2
+        vuelos_houston <- filter(flights,dest %in% c("IAH","HOU"))
+```
+
+-   5.3.1 Exercises: all items
+
+```{r eval=FALSE}
+#1 -´
+
+valores_NA_al_principio <-arrange(flights,desc(is.na(dep_delay)))
+#2
+vuelos_retrasados <- arrange(flights,desc(dep_delay))
+ vuelos_salieron_antes <-  filter(vuelos_retrasados,dep_delay<=-1)
+#3
+ vuelos_mas_rapidos <- arrange(flights,hour,desc(distance))
+view(flights)
+
+#4
+vuelos_con_mas_distancia <- arrange(flights,desc(distance))
+#vuelo con menor distancia 	-> 1632
+```
+
+-   5.4.1 Exercises: items 2, 3, and 4
+
+```{r eval=FALSE}
+#1
+select(flights,dep_time,dep_delay,arr_time,arr_delay)
+filtro <- select(flights,dep_time,dep_delay,arr_time,arr_delay,everything())
+select(filtro,dep_time:arr_delay)
+select(flights,starts_with("de"),starts_with("arr"))
+vars2 <- c("dep_time","dep_delay","arr_time","arr_delay")
+select(flights,any_of(vars2))
+#2
+select(flights,dep_time,dep_time)  #solo la muestra 1 vez
+#3
+vars <- c("year", "month", "day", "dep_delay", "arr_delay") 
+#Este vector nos ayuda a escoger las variables que componen el vector
+select(flights,any_of("year"))
+# el any of escoge las varibales que se le indiquien de la tabla seleccionada
+#4
+select(flights, contains("DEP"))
+# De esta manera se puede filtrar las variables que tengan esta palabra,
+#por el tema del nombre de la funcion se logra esperar un resultado.
+```
+
+-   5.5.2 Exercises: items 1, and 2
+
+```{r eval=FALSE}
+#1
+transmute(flights,
+          dep_time,
+          hour = dep_time %/% 100,
+          minute = dep_time %% 100,
+          sched_dep_time,
+          hour_sched_dep_time = sched_dep_time %/%100,
+          minute_sched_dep_time =sched_dep_time%%100
+)
+#2
+view(transmute(flights,air_time,x=arr_time-dep_time))
+#Que esperas ver? esperaba ver el mismo tiempo ya que el tiempo de vuelo 
+#corresponde al tiempo que pasa desde que despega hasta que aterriza
+#¿Que ves? que los tiempos no coinciden y algunos estan muy desfazados
+#¿Qué necesitas hacer para arreglarlo?crear una nueva variable que me compare 
+#la diferencia del resultado y eso restarselo a a x para que  de el mismo 
+#tiempo de vuelo 
+
+```
+
+-   5.6.7 Exercises: item 1
+
+```{r eval=F}
+
+not_cancelled <- flights %>% 
+  #se filtran los datos para que no tengan datos invalidos
+  filter(!is.na(dep_delay), !is.na(arr_delay))
+#15 minutos de retraso
+Numberfly <- not_cancelled  %>%
+  group_by(flight) %>%# se selecciona por la comluna de numero de vuuelo
+  summarise(
+    pos = median(arr_delay[arr_delay ==15]),
+    #se utilza la funcion median para obtener el 50% y se filtra por los 
+    #resultados igual a 15
+    neg = median(arr_delay[arr_delay ==-15])
+    #se utilza la funcion median para obtener el 50% 
+    #y se filtra por los resultados igual a -15
+  )
+#Siempre llega 10 minutos
+Ten <- not_cancelled %>% # se crea un nuevo grupo de datos
+  group_by(flight)%>% #se agrupa po el numero de vuelo
+    filter(arr_delay==-10) #se f iltra el delay por los que sean igual a 10
+#30 minutos de retraso
+trit <- not_cancelled  %>%
+  group_by(flight) %>%
+  summarise(
+    pos = median(arr_delay[arr_delay ==30]),
+    #se utilza la funcion median y se filtra por los resultados igual a 30
+    neg = median(arr_delay[arr_delay ==-30])
+    #se utilza la funcion median y se filtra por los resultados igual a -30
+)
+```
+
+## 2.Uso básico del paquete Tidyverse
+
+-   Funcion SelelecT()
+
+    Para este caso vamos a usar la libreria **Lahman**, primeramente vamos a cargar la libreria junto con la \*\*tidyverse, luego vamos a dejar echo=TRUE para ver las librerias y como traemos la tabla batting. Como es una tabla tan grande se deja eval=FALSE para que no muestre el resultado del codigo.
+
+    ```{r echo = TRUE, eval=FALSE ,include=TRUE}
+    library(tidyverse)
+    library(dplyr)
+    Lahman::Batting
+    ```
+
+    la funcion select() nos permite organizar las variables de las tablas de una mejor manera, para este caso vamos a tomar solo 7 filas y 7 columnas que nos permitiran ver la tabla. dejamos eval :TRUE para uqe nos muestre que hace el codigo
+
+    ```{r eval=TRUE}
+library(tidyverse)
+library(dplyr)
+datos <- Lahman::Batting
+datos[c(1:7),c(1:7),drop=FALSE]
+tabla <- select(datos,playerID:teamID)
+tabla[c(1:7),c(1:4),drop=FALSE]
+
+    ```
+
+solo tomamos los datos desde playerID hasta teamID, tambien podriamos reorganizr esta tabla de la siguiente manera
+```{r include=TRUE}
+library(tidyverse)
+library(dplyr)
+datos <- Lahman::Batting
+tabla <- datos[c(1:7),c(1:22),drop=FALSE]
+select(tabla,CS,SB,RBI,everything())
+
+```
+
+en este caso pusimos las variables CS,SB y RBI al principio de nuestra tabla, con la funcion everything() ponemos el resto de datos faltantes
