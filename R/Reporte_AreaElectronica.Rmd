@@ -1,11 +1,12 @@
 ---
 title: "Reporte en R-Markdown " 
-#author: "Juan Diego Cubides"
+
+#author: " Juan Diego Cubides"
 #date: "`r Sys.Date()`"
 output: pdf_document
 ---
 
-```{r setup, include=FALSE,echo =FALSE,eval=FALSE}
+```{r setup, include=FALSE,echo =TRUE,eval=TRUE}
 knitr::opts_chunk$set(echo =FALSE)
 ```
 
@@ -17,6 +18,8 @@ knitr::opts_chunk$set(echo =FALSE)
 
 ### Jersson Leandro Ávila Méndez 85550
 
+## Link de GIT HUB: <https://github.com/DiegoCubides>
+
 ## 1. Números primos:
 
 Para la solucion de este programa decidimos anidar dos for, el primero nos permite tener el conteo del 1 hasta el 100 permitiendonos recorrer todos los numeros a evaluar y el segundo for inicia desde 2 hasta x siendo x el valor en el que va el primer for. Cuando se quiere evaluar que numero es primo o no se tienen dos condiciones esenciales:
@@ -25,7 +28,7 @@ Para la solucion de este programa decidimos anidar dos for, el primero nos permi
 
 -   si b es diferente de x y el modulo de la division de estos dos es 0 se sabe que ya no es un numero primo.
 
-```{r eval=F}
+```{r eval=F,include=TRUE,echo=TRUE}
 library(knitr)
 for (x in 1:100){ 
   primo <- TRUE
@@ -51,7 +54,7 @@ for (x in 1:100){
 
 -   5.2.4 Exercises: items 1, and 2\
 
-```{r eval=FALSE}
+```{r eval=FALSE,echo=TRUE}
         library(nycflights13)
         library(tidyverse)
         library(dplyr)
@@ -65,7 +68,7 @@ for (x in 1:100){
 
 -   5.3.1 Exercises: all items
 
-```{r eval=FALSE}
+```{r eval=FALSE,echo=TRUE}
 #1 -´
 
 valores_NA_al_principio <-arrange(flights,desc(is.na(dep_delay)))
@@ -83,7 +86,7 @@ vuelos_con_mas_distancia <- arrange(flights,desc(distance))
 
 -   5.4.1 Exercises: items 2, 3, and 4
 
-```{r eval=FALSE}
+```{r eval=FALSE,echo=TRUE}
 #1
 select(flights,dep_time,dep_delay,arr_time,arr_delay)
 filtro <- select(flights,dep_time,dep_delay,arr_time,arr_delay,everything())
@@ -106,7 +109,7 @@ select(flights, contains("DEP"))
 
 -   5.5.2 Exercises: items 1, and 2
 
-```{r eval=FALSE}
+```{r eval=FALSE,echo=TRUE}
 #1
 transmute(flights,
           dep_time,
@@ -129,7 +132,7 @@ view(transmute(flights,air_time,x=arr_time-dep_time))
 
 -   5.6.7 Exercises: item 1
 
-```{r eval=F}
+```{r eval=F,echo=TRUE}
 
 not_cancelled <- flights %>% 
   #se filtran los datos para que no tengan datos invalidos
@@ -160,7 +163,7 @@ trit <- not_cancelled  %>%
 )
 ```
 
-## 2.Uso básico del paquete Tidyverse
+## 3.Uso básico del paquete Tidyverse
 
 -   Funcion SelelecT()
 
@@ -175,16 +178,17 @@ trit <- not_cancelled  %>%
     la funcion select() nos permite organizar las variables de las tablas de una mejor manera, para este caso vamos a tomar solo 7 filas y 7 columnas que nos permitiran ver la tabla. dejamos eval :TRUE para uqe nos muestre que hace el codigo
 
     ```{r eval=TRUE}
-library(tidyverse)
-library(dplyr)
-datos <- Lahman::Batting
-datos[c(1:7),c(1:7),drop=FALSE]
-tabla <- select(datos,playerID:teamID)
-tabla[c(1:7),c(1:4),drop=FALSE]
+    library(tidyverse)
+    library(dplyr)
+    datos <- Lahman::Batting
+    datos[c(1:7),c(1:7),drop=FALSE]
+    tabla <- select(datos,playerID:teamID)
+    tabla[c(1:7),c(1:4),drop=FALSE]
 
     ```
 
 solo tomamos los datos desde playerID hasta teamID, tambien podriamos reorganizr esta tabla de la siguiente manera
+
 ```{r include=TRUE}
 library(tidyverse)
 library(dplyr)
@@ -195,3 +199,156 @@ select(tabla,CS,SB,RBI,everything())
 ```
 
 en este caso pusimos las variables CS,SB y RBI al principio de nuestra tabla, con la funcion everything() ponemos el resto de datos faltantes
+
+Función Arrange (). Esta función es utilizada para cambiar el orden de las filas y poder ordenarlas de acuerdo a la necesidad de datos que tengamos. Si colocamos en el arreglo varios nombres de columnas esta función ordenará la primera y luego seguirá con la segunda ordenando los datos sin desordenar la anterior y así sucesivamente con todas.
+
+Para este ejemplo utilizaremos las librerías library(nycflights13) , library(tidyverse) y library(dplyr);
+
+```{r echo=TRUE,eval=TRUE}
+library(nycflights13)
+  library(tidyverse)
+  library(dplyr)
+  
+  arr1 <- tibble(x = c(1,3,NA,6,5,7,4,NA,2,1,4,7,7,3,2), y = c(1,1,NA,2,2,3,3,4,4,5,5,6,6,7,7)
+              ,z= c("F","E","A","C","D",NA,"B","G",NA,"M","I","L","H","J","K")) %>% 
+  arrange(x,y,z)
+```
+
+Cabe aclarar que los valores NA siempre quedan al final, a no ser que usemos la herramienta is.na()
+
+```{r echo=TRUE,eval=TRUE}
+arr1 <- tibble(x = c(1,3,NA,6,5,7,4,NA,2,1,4,7,7,3,2), y = c(1,1,NA,2,2,3,3,4,4,5,5,6,6,7,7)
+               ,z= c("F","E","A","C","D",NA,"B","G",NA,"M","I","L","H","J","K")) %>% 
+  arrange(arr1,desc(y))
+```
+
+## 4 Git Hub
+
+Para el ultimo punto hicimos una funcion que recibe una variable "a", dentro de la variable tenemos varios else if anidados los cuales nos permiten evaluar todos los casos y cuando se cumpla la condicion dejara de evaluar el resto.
+
+```{r  echo=TRUE}
+retrieve_answer <- function(a){
+  if(a=="1"){
+    library(nycflights13)
+    library(tidyverse)
+    library(dplyr)
+    nycflights13::flights
+    #5.2.4 Exercises
+    #1
+    arrival_delays <- filter(flights,arr_delay>=120)
+    #2
+    vuelos_houston <- filter(flights,dest %in% c("IAH","HOU"))
+    #4
+    salida_jun_agost_sep <- filter(flights,month %in% c(7,8,9))
+    
+  }else if(a=="2"){
+    library(nycflights13)
+    library(tidyverse)
+    library(dplyr)
+    nycflights13::flights
+    #5.3.1 Ejercicios
+    #1 -
+    
+    valores_NA_al_principio <-arrange(flights,desc(is.na(dep_delay)))
+    #2
+    vuelos_retrasados <- arrange(flights,desc(dep_delay))
+    vuelos_salieron_antes <-  filter(vuelos_retrasados,dep_delay<=-1)
+    #3
+    vuelos_mas_rapidos <- arrange(flights,hour,desc(distance))
+    #4
+    vuelos_con_mas_distancia <- arrange(flights,desc(distance))
+    #vuelo con menor distancia 	-> 1632
+    
+    
+  }
+  else if(a=="3"){
+    library(nycflights13)
+    library(tidyverse)
+    library(dplyr)
+    nycflights13::flights
+    
+    #5.4.1
+    #1
+    select(flights,dep_time,dep_delay,arr_time,arr_delay)
+    filtro <- select(flights,dep_time,dep_delay,arr_time,arr_delay,everything())
+    select(filtro,dep_time:arr_delay)
+    select(flights,starts_with("de"),starts_with("arr"))
+    vars2 <- c("dep_time","dep_delay","arr_time","arr_delay")
+    select(flights,any_of(vars2))
+    #2
+    select(flights,dep_time,dep_time)  #solo la muestra 1 vez
+    #3
+    vars <- c("year", "month", "day", "dep_delay", "arr_delay") #para este vector nos ayuda a escoger las variables que componen el vector
+    select(flights,any_of("year")) # el any of escoge las varibales que se le indiquien de la tabla seleccionada
+    #4
+    select(flights, contains("DEP"))# De esta manera se puede filtrar las variables que tengan esta palabra, por el tema del nombre de la funcion se logra esperar un resultado
+    
+  }
+  else if(a=="4"){
+    
+    library(nycflights13)
+    library(tidyverse)
+    library(dplyr)
+    nycflights13::flights
+    #5.5.2
+    #1
+    transmute(flights,
+              dep_time,
+              hour = dep_time %/% 100,
+              minute = dep_time %% 100,
+              sched_dep_time,
+              hour_sched_dep_time = sched_dep_time %/%100,
+              minute_sched_dep_time =sched_dep_time%%100
+    )
+    #2
+    view(transmute(flights,air_time,x=arr_time-dep_time))
+    #Que esperas ver? esperaba ver el mismo tiempo ya que el tiempo de vuelo corresponde al tiempo que pasa desde que despega hasta que aterriza
+    #¿Que ves? que los tiempos no coinciden y algunos estan muy desfazados
+    #¿Qué necesitas hacer para arreglarlo?crear una nueva variable que me compare la diferencia del resultado y eso restarselo a a x para que me de el mismo tiempo de vuelo
+  }
+  else if(a=="5"){
+    library(nycflights13)
+    library(tidyverse)
+    library(dplyr)
+    nycflights13::flights
+    #5.6.7
+    #1
+    not_cancelled <- flights %>%
+      filter(!is.na(dep_delay), !is.na(arr_delay))
+    #15 minutos de retraso
+    Numberfly <- not_cancelled  %>%
+      group_by(flight) %>%
+      summarise(
+        pos = median(arr_delay[arr_delay ==15]),
+        neg = median(arr_delay[arr_delay ==-15])
+      )
+    #Siempre llega 10 minutos
+    Ten <- not_cancelled %>%
+      group_by(flight)%>%
+      filter(arr_delay==-10)
+    #30 minutos de retraso
+    trit <- not_cancelled  %>%
+      group_by(flight) %>%
+      summarise(
+        pos = median(arr_delay[arr_delay ==30]),
+        neg = median(arr_delay[arr_delay ==-30])
+      )
+    
+    
+  }
+  else if(a=="6"){
+    print("falta ")
+    
+  }
+}
+print("El siguiente codigo tiene la solucion de los ejercicios propuesto para la primera entrega")
+print("1-> 5.2.4 : items 1, and 2")
+print("2-> 5.3.1 : all items")
+print("3-> 5.4.1 : items 2, 3, and 4")
+print("4-> 5.5.2 Exercises: items 1, and 2")
+print("5-> 5.6.7 Exercises: item 1")
+print("5-> 7.1 Exercises: item 2 esta ")
+x <- readline(prompt="Ingrese una respuesta")
+
+retrieve_answer(x)
+```
